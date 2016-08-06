@@ -27,4 +27,7 @@ Maybe with a "fromscratch" option
 
 Should that get as far as setup.py, or not?
 
+Ok, what do I want this notpip utility to consist of?
+notpip getversions --package=easy_install?
+
 
