@@ -1,0 +1,30 @@
+django-image-cropping
+
+django-image-cropping-1.0.3.tar.gz is available online.
+So we want this particular version
+
+https://pypi.python.org/packages/0c/cb/bfaf5e56f7f2749bd9fa584186f88055733213dbab33ec23311a823d2d17/django-image-cropping-1.0.3.tar.gz#md5=9ec7ad22d804ec29146574f3d499a93b
+
+That is the link
+https://pypi.python.org/simple/django-image-cropping/
+is the page where the link exists.
+
+Inside the <a> tag, we get the text
+django-image-cropping-1.0.3.tar.gz
+which can definitely be formed programmatically.
+
+Have running example_project directory, with "packages" subdirectory
+
+curl -o example_project/packages/django-image-cropping/1.0.3.tar.gz https://pypi.python.org/packages/0c/cb/bfaf5e56f7f2749bd9fa584186f88055733213dbab33ec23311a823d2d17/django-image-cropping-1.0.3.tar.gz#md5=9ec7ad22d804ec29146574f3d499a93b
+
+Make django-image-cropping/1.0.3 subdirectory, I suppose.
+
+Tried to "python setup.py install", got error about easy_install
+
+What is interface I want?
+extract --name=django-image-cropping --version=1.0.3 --repo=example_project
+Maybe with a "fromscratch" option
+
+Should that get as far as setup.py, or not?
+
+
