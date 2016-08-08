@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/bin/python
 import argparse
 import os
 import requests
@@ -117,8 +117,11 @@ if os.path.isdir(specific_package_dir):
 nprint("Creating local directory {0}.".format(specific_package_dir))
 os.mkdir(specific_package_dir)
 
+tgz_file = "{0}/{1}".format(specific_package_dir, expected_tgz_file)
 
-
+with open(tgz_file, "w") as tgz_file:
+    r = requests.get(absolute_link)
+    tgz_file.write(r.content)
 
 
 
