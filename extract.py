@@ -1,8 +1,10 @@
 #!/usr/local/bin/python
 import argparse
 import os
-import requests
+import subprocess
+import urllib2
 import shutil
+import sys
 
 
 def nprint(str):
@@ -64,15 +66,15 @@ pypi_simple_base_url = 'https://pypi.python.org/simple'
 package_url = "{0}/{1}".format(pypi_simple_base_url, package)
 
 nprint("Inspecting the URL {0}.".format(package_url))
-r = requests.get(package_url)
-if r.status_code != 200:
+r = urllib2.urlopen(package_url)
+if r.getcode() != 200:
     raise Exception(
         "There is nothing at the URL {0}. Does the package {1} exist?".format(
             package_url, package
         )
     )
 
-elements = r.text.split('\n')
+elements = r.read().split('\n')
 expected_tgz_file = "{0}-{1}.tar.gz".format(package, version)
 
 relevant_elements = [
@@ -117,11 +119,34 @@ if os.path.isdir(specific_package_dir):
 nprint("Creating local directory {0}.".format(specific_package_dir))
 os.mkdir(specific_package_dir)
 
-tgz_file = "{0}/{1}".format(specific_package_dir, expected_tgz_file)
+tgz_filename = "{0}/{1}".format(
+    specific_package_dir, expected_tgz_file
+)
 
-with open(tgz_file, "w") as tgz_file:
-    r = requests.get(absolute_link)
-    tgz_file.write(r.content)
+nprint("Compressing package into {0}.".format(tgz_filename))
+with open(tgz_filename, "w+") as f:
+    r = urllib2.urlopen(absolute_link)
+    f.write(r.read())
 
+nprint("Extracting {0}.".format(tgz_filename))
+subprocess.call(['tar', '-x', '-v', '-f', tgz_filename,
+    '-C', specific_package_dir])
 
+nprint("Deleting file {0}.".format(tgz_filename))
+os.remove(tgz_filename)
+
+nprint("Running setup.py for {0}.".format(package))
+enhanced_package_dir = '{0}/{1}-{2}'.format(specific_package_dir, package, version)
+sys.path.append("{0}/{1}".format(
+        os.getcwd(), 
+        enhanced_package_dir
+    )
+)
+
+os.chdir(enhanced_package_dir)
+subprocess.call(['python', 
+    'setup.py',
+    'install',
+])
+os.chdir('../../..')
 
