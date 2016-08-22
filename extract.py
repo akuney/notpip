@@ -90,9 +90,10 @@ if len(relevant_elements) == 0:
         )
     )
 
+print relevant_elements
 nprint("Found file {0} on the internet.".format(expected_tgz_file))
 
-relative_link = relevant_elements[0].split("\"")[1]
+relative_link = relevant_elements[0].split("href=\"")[1]
 absolute_link = "{0}/{1}".format(
     pypi_base_url,
     relative_link[len("../../"):]
